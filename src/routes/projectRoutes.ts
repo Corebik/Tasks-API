@@ -5,6 +5,7 @@ import { NoteController, ProjectController, TeamMemberController } from '../cont
 import {
    authenticate,
    handleInputErrors,
+   hasAuthorization,
    projectExists,
    taskBelongsToProject,
    taskExists,
@@ -43,11 +44,14 @@ router.get(
    ProjectController.getProjectById,
 );
 
+router.param('projectId', projectExists);
+
 router.put(
-   '/:id',
+   '/:projectId',
    [
       //* Middleware
-      param('id', 'Invalid ID').isMongoId(),
+      hasAuthorization,
+      param('projectId', 'Invalid ID').isMongoId(),
       check('projectName', 'Project name is required').not().isEmpty(),
       check('clientName', 'Client name is required').not().isEmpty(),
       check('description', 'The Description of the project is required').not().isEmpty(),
@@ -58,10 +62,11 @@ router.put(
 );
 
 router.delete(
-   '/:id',
+   '/:projectId',
    [
       //* Middleware
-      param('id', 'Invalid ID').isMongoId(),
+      hasAuthorization,
+      param('projectId', 'Invalid ID').isMongoId(),
       handleInputErrors,
    ],
    //* Controller
@@ -69,8 +74,6 @@ router.delete(
 );
 
 //! ROUTES FOR TEAM
-
-router.param('projectId', projectExists);
 
 router.post(
    '/:projectId/team/find',

@@ -56,23 +56,11 @@ export class ProjectController {
 
    static updateProject = async (req: Request, res: Response) => {
       try {
-         const project = await Project.findById(req.params.id);
+         req.project.clientName = req.body.clientName;
+         req.project.projectName = req.body.projectName;
+         req.project.description = req.body.description;
 
-         if (!project) {
-            res.status(404).json({ ok: false, msg: 'Project not found' });
-            return;
-         }
-
-         if (project.manager.toString() !== req.user.id.toString()) {
-            res.status(400).json({ ok: false, msg: 'Only the manager can update the project' });
-            return;
-         }
-
-         project.clientName = req.body.clientName;
-         project.projectName = req.body.projectName;
-         project.description = req.body.description;
-
-         await project.save();
+         await req.project.save();
 
          res.status(200).json({ ok: true, msg: 'Project updated successfully' });
       } catch (error) {
@@ -82,19 +70,7 @@ export class ProjectController {
 
    static deleteProject = async (req: Request, res: Response) => {
       try {
-         const project = await Project.findById(req.params.id);
-
-         if (!project) {
-            res.status(404).json({ ok: false, msg: 'Project not found' });
-            return;
-         }
-
-         if (project.manager.toString() !== req.user.id.toString()) {
-            res.status(400).json({ ok: false, msg: 'Only the manager can delete the project' });
-            return;
-         }
-
-         await project.deleteOne();
+         await req.project.deleteOne();
 
          res.status(200).json({ ok: true, msg: 'Project deleted successfully' });
       } catch (error) {
