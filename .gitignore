@@ -1,0 +1,26 @@
+# Archivos y directorios que se ignoran
+
+# Directorios de dependencias
+node_modules/
+vendor/
+
+# Archivos de configuración
+.env
+config.json
+
+# Archivos de compilación y ejecución
+build/
+dist/
+tmp/
+
+# Archivos de logs
+logs/
+*.log
+
+# Archivos de sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos de IDE
+.idea/
+.vscode/
